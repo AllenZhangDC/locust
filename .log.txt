@@ -1,0 +1,49 @@
+[2023-07-05 13:52:39,218] Guoweis-Mac-Studio.local/INFO/locust.main: Starting web interface at http://0.0.0.0:8089 (accepting connections from all network interfaces)
+[2023-07-05 13:52:39,223] Guoweis-Mac-Studio.local/INFO/locust.main: Starting Locust 2.15.1
+[2023-07-05 13:53:05,256] Guoweis-Mac-Studio.local/INFO/locust.runners: Ramping to 5 users at a rate of 3.00 per second
+[2023-07-05 13:53:06,262] Guoweis-Mac-Studio.local/INFO/locust.runners: All users spawned: {"AdsServer": 5} (5 total users)
+[2023-07-05 13:53:22,646] Guoweis-Mac-Studio.local/INFO/locust.main: Shutting down (exit code 0)
+[2023-07-05 13:55:42,839] Guoweis-Mac-Studio.local/INFO/locust.main: Starting web interface at http://0.0.0.0:8089 (accepting connections from all network interfaces)
+[2023-07-05 13:55:42,843] Guoweis-Mac-Studio.local/INFO/locust.main: Starting Locust 2.15.1
+[2023-07-05 13:55:49,620] Guoweis-Mac-Studio.local/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2023-07-05 13:55:49,623] Guoweis-Mac-Studio.local/INFO/locust.runners: All users spawned: {"AdsServer": 1} (1 total users)
+[2023-07-05 13:55:49,698] Guoweis-Mac-Studio.local/ERROR/locust.user.task: list index out of range
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 347, in run
+    self.execute_next_task()
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 372, in execute_next_task
+    self.execute_task(self._task_queue.pop(0))
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 493, in execute_task
+    task(self.user)
+  File "/Users/guoweizhang/Tools/locust/locustfile.py", line 29, in get_onev2
+    ClickTracking = ET.fromstring(xml).findall(".//*[@event='ClickTracking']")[1].text
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+[2023-07-05 13:55:52,303] Guoweis-Mac-Studio.local/ERROR/locust.user.task: list index out of range
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 347, in run
+    self.execute_next_task()
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 372, in execute_next_task
+    self.execute_task(self._task_queue.pop(0))
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 493, in execute_task
+    task(self.user)
+  File "/Users/guoweizhang/Tools/locust/locustfile.py", line 29, in get_onev2
+    ClickTracking = ET.fromstring(xml).findall(".//*[@event='ClickTracking']")[1].text
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+[2023-07-05 13:55:56,871] Guoweis-Mac-Studio.local/ERROR/locust.user.task: list index out of range
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 347, in run
+    self.execute_next_task()
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 372, in execute_next_task
+    self.execute_task(self._task_queue.pop(0))
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/locust/user/task.py", line 493, in execute_task
+    task(self.user)
+  File "/Users/guoweizhang/Tools/locust/locustfile.py", line 29, in get_onev2
+    ClickTracking = ET.fromstring(xml).findall(".//*[@event='ClickTracking']")[1].text
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+[2023-07-05 13:56:05,512] Guoweis-Mac-Studio.local/INFO/locust.main: Shutting down (exit code 1)

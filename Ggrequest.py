@@ -1,0 +1,112 @@
+import random
+import json
+from mylib import *
+
+class Size:
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+
+class Ad_Unit:
+    def __init__(self, no, hrc, code, sizes):
+        self.no = no
+        self.hrc = hrc
+        self.code = code
+        self.dy_id = random_position()
+        self.sizes = sizes
+
+class Ad_Unit_Video:
+    def __init__(self, no, hrc):
+        self.no = no
+        self.hrc = hrc
+        self.code = 'shorts'
+        self.dy_id = random_position()
+        self.sizes = [Size(200, 800)]
+
+class Ggrequests:
+    def __init__(self, cid, req_id, cnt_id, lang, nw_id, pub_id, more_info, ad_units):
+        self.cid = cid
+        self.req_id = req_id
+        self.cnt_id = cnt_id
+        self.lang = lang
+        self.nw_id = nw_id
+        self.pub_id = pub_id
+        self.more_info = False
+        self.ad_units = ad_units
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Size):
+            return {'w': obj.w, 'h': obj.h}
+        elif isinstance(obj, Ad_Unit):
+            return {
+                'no': obj.no,
+                'hrc': obj.hrc,
+                'code': obj.code,
+                'dy_id': obj.dy_id,
+                'sizes': [self.default(size) for size in obj.sizes]  # 序列化列表中的每个元素
+            }
+        elif isinstance(obj, Ad_Unit_Video):
+            return {
+                'no': obj.no,
+                'hrc': obj.hrc,
+                'code': obj.code,
+                'dy_id': obj.dy_id,
+                'sizes': [self.default(size) for size in obj.sizes]
+            }
+        elif isinstance(obj, Ggrequests):
+            return {
+                'cid': obj.cid,
+                'req_id': obj.req_id,
+                'cnt_id': obj.cnt_id,
+                'lang': obj.lang,
+                'nw_id': obj.nw_id,
+                'pub_id': obj.pub_id,
+                'more_info': obj.more_info,
+                'ad_units': [self.default(ad_unit) for ad_unit in obj.ad_units]  # 序列化列表中的每个元素
+            }
+        return super().default(obj)
+    
+def random_size():
+    return random.choice([Size(450, 180), Size(300, 250), Size(728, 90), Size(900, 112), Size(540, 450)])
+
+
+def random_sizes():
+    sizes = list()
+    sizes.append(random_size())
+    return sizes
+
+def random_Ad_Unit(num):
+    return Ad_Unit(num, random_text('hrc_'), random_zone(), random_sizes())
+
+def random_Ad_Unit_Video(num):
+    return Ad_Unit_Video(num, random_text('hrc_'))
+
+def random_Ad_Units():
+    ads_units = list()
+    for i in range(random.randint(1, 4)):
+        ads_units.append(random_Ad_Unit(i))  
+    for i in range(random.randint(1, 2)):
+        ads_units.append(random_Ad_Unit_Video(i))
+    return ads_units
+
+def generate_random_ggrequest_body():
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), random_text('hw_'), random_text('pub_'), random_text('morei_'), random_Ad_Units())
+    result = json.dumps(tmp, cls=CustomEncoder)
+    return result
+
+
+
+if __name__ == '__main__':
+    # 创建对象示例
+    # size1 = Size(300, 250)
+    # size2 = Size(728, 90)
+    # ad_unit1 = Ad_Unit(1, True, 'ad_code_1', [size1, size2])
+    # ad_unit2 = Ad_Unit(2, False, 'ad_code_2', [size1])
+    # gg_request = Ggrequests(random_text(), random_text(), random_text(), random_lang(), random_text(), random_text(), random_text(), [ad_unit1, ad_unit2])
+    ads = generate_random_ggrequest_body()
+
+    json = json.dumps(ads, cls=CustomEncoder)
+    print(json)
+
+    # 将对象转换为 JSON 字符串

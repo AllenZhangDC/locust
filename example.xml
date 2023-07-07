@@ -1,0 +1,48 @@
+<VAST version="3.0">
+    <Ad>
+        <InLine>
+            <AdSystem>GJW Ads</AdSystem>
+            <AdTitle><![CDATA[qa\xe6\x99\xba\xe6\x85\xa7\xe5\xae\xb6\xe5\xba\xad\xe6\x95\xb4\xe5\x90\x88\xe4\xb8\xad\xe5\xbf\x83 1500]]></AdTitle>
+            <Description></Description>
+            <Impression><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=impression&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Impression>
+            <Impression><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=impression&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Impression>
+            <Creatives>
+                <Creative>
+                    <Linear
+                        skipoffset="00:00:05">
+                        <TrackingEvents>
+                            <Tracking event="skip"><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=skip&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking event="progress" offset="00:00:15"><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=view&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4&view_time=15]]></Tracking>
+                            <Tracking
+                                event="firstQuartile"><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=firstQuartile&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=midpoint&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking event="thirdQuartile"><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=thirdQuartile&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking
+                                event="complete"><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=complete&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking event="skip"><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=skip&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking
+                                event="progress" offset="00:00:15"><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=view&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4&view_time=15]]></Tracking>
+                            <Tracking
+                                event="firstQuartile"><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=firstQuartile&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=midpoint&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking event="thirdQuartile"><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=thirdQuartile&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                            <Tracking
+                                event="complete"><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=complete&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4]]></Tracking>
+                        </TrackingEvents>
+                        <Duration>
+                            00:00:30</Duration>
+                        <MediaFiles>
+                            <MediaFile delivery="streaming"
+                                type="application/x-mpegURL" width="854" height="480"
+                                scalable="true" maintainAspectRatio="true"><![CDATA[https://media1-us-west.cloudokyo.cloud/video/v3/7d/6b/d7/7d6bd7eb-7f4e-49f6-a457-b1b1ea6c29e0/master.m3u8]]></MediaFile>
+                        </MediaFiles>
+                        <VideoClicks>
+                            <ClickTracking><![CDATA[http://54.176.6.229:6080/v1/cdkapi/request-tracking?en=click&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4&click_target_url=aHR0cHM6Ly93d3cuZXBvY2h0aW1lcy5jb20v]]></ClickTracking>
+                            <ClickThrough><![CDATA[https://gw.ganjingworld.dev/v1.0c/uba/send?en=click&emb_id=qa_vd_2500&ad_video_id=1fav987ufd83KmkzcDpDPhfhz1627c&cid=afasf&cnt_id=afasf&req_id=afasf&event_id=88c1675f-943f-41c6-a05b-808b75156ca4&click_target_url=aHR0cHM6Ly93d3cuZXBvY2h0aW1lcy5jb20v]]></ClickThrough>
+                        </VideoClicks>
+                    </Linear>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>
