@@ -9,7 +9,7 @@ from locust.env import Environment
 
 class AdsServer(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
-    wait_time = between(1, 1)
+    wait_time = between(0, 1)
     @task
     def get_onev2(self):
         with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True) as resp:
