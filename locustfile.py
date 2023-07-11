@@ -1,23 +1,24 @@
-import time, json, base64, random, string, logging, random,json
-from urllib import response
+import time, json, base64, random, string, logging, random,json, gevent.monkey
 from mylib import *
 from Ggrequest import *
 import xml.etree.ElementTree as ET
 from locust import *
 from locust.env import Environment
 
+gevent.monkey.patch_all()
 
-class AdsServer(HttpUser):
+jsonstr = '{"cid": "cid_BzanIxIY", "req_id": "req_OssjLsTY", "cnt_id": "cnt_CmpgXijc", "lang": "ja-JP", "nw_id": "hw_nRWEXUCl", "pub_id": "pub_RQBbzrAB", "more_info": false, "ad_units": [{"no": 1, "hrc": "hrc_FTdCiVYc", "code": "z_v_r_b_2", "dy_id": 5, "sizes": [{"w": 300, "h": 250}]}, {"no": 2, "hrc": "hrc_YBaLEncJ", "code": "z_a_c_2", "dy_id": 8, "sizes": [{"w": 900, "h": 112}]}, {"no": 3, "hrc": "hrc_bsJZrNVa", "code": "shorts", "dy_id": 5, "sizes": [{"w": 200, "h": 800}]}, {"no": 4, "hrc": "hrc_UthSHBPw", "code": "shorts", "dy_id": 6, "sizes": [{"w": 200, "h": 800}]}]}'
+
+class Single_GetOne(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
-    wait_time = between(0, 1)
+    wait_time = between(5, 10)
     @task
     def get_onev2(self):
-        with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True) as resp:
-            code = resp.status_code
-            if code == 200:
-                json_data = json.loads(resp.text)
-                if json_data["data"]["is_404"] == True:
-                    resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
+        resp = self.client.get(url="/getonev2", params={"cid":random_text('cid_'), "cnt_id":random_text('cnt_'), "req_id":random_text('req_'), "lang":random_lang()}, name="Single_GetOne")
+        if resp.status_code == 200:
+            json_data = json.loads(resp.text)
+            if json_data["data"]["is_404"] == True:
+                resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
 
             # xml = base64.b64decode(json_data["data"]["xml"])
             # self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
@@ -30,35 +31,60 @@ class AdsServer(HttpUser):
             # self.ClickTracking = ET.fromstring(xml).findall(".//ClickTracking")[0].text
             #self.random_callback(probability=0.6)
 
-    # @task
-    # def get_gg(self):
-    #     json_body = generate_random_ggrequest_body()
-    #     resp2 = self.client.post(url="/getggv2", json= json_body)
-    #     if resp2.status_code == 200:
-    #         json_var = resp2.json()
-    #         #logging.info(json.loads(resp2.text))
+# class Single_GetGG(HttpUser):
+#     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
+#     wait_time = between(5, 10)
+#     @task
+#     def get_ggv2(self):
+#         json_body = generate_random_ggrequest_body()
+#         resp = requests.post(url="http://loadtest.dev.ganjing.world/v1/cdkapi/getggv2", json = json_body)
+#         if resp.status_code == 200:
+#             json_var = resp.json()
+
+# class GetOneWithCallback(HttpUser):
+#     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
+#     wait_time = between(5, 10)
+#     @task
+#     def get_onev2(self):
+#         with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Video Ads Request",catch_response=True) as resp:
+#             code = resp.status_code
+#             if code == 200:
+#                 json_data = json.loads(resp.text)
+#                 if json_data["data"]["is_404"] == False:
+#                     xml = base64.b64decode(json_data["data"]["xml"])
+#                     self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
+#                     self.Skip = ET.fromstring(xml).findall(".//*[@event='skip']")[1].text
+#                     self.Progress = ET.fromstring(xml).findall(".//*[@event='progress']")[1].text
+#                     self.FirstQuartile = ET.fromstring(xml).findall(".//*[@event='firstQuartile']")[1].txt
+#                     self.Midpoint = ET.fromstring(xml).findall(".//*[@event='midpoint']")[1].text
+#                     self.ThirdQuartile = ET.fromstring(xml).findall(".//*[@event='thirdQuartile']")[1].text
+#                     self.Complete = ET.fromstring(xml).findall(".//*[@event='complete']")[1].text
+#                     self.ClickTracking = ET.fromstring(xml).findall(".//ClickTracking")[0].text
+#                     self.random_callback(probability=0.6)
+#                 else:
+#                     resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
 
 
-    # def random_callback(self, probability=0.6):
-    #     if(decision(probability)):
-    #         self.client.get(url=self.Impression)
-    #         if(decision(probability)):
-    #             self.client.get(url=self.Skip)
-    #             if(decision(probability)):
-    #                 self.client.get(url=self.Progress)
-    #                 if(decision(probability)):
-    #                     self.client.get(url=self.FirstQuartile)
-    #                     if(decision(probability)):
-    #                         self.client.get(url=self.Midpoint)
-    #                         if(decision(probability)):
-    #                             self.client.get(url=self.ThirdQuartile)
-    #                             if(decision(probability)):
-    #                                 self.client.get(url=self.Complete)
-    #                                 if(decision(probability)):
-    #                                     self.client.get(url=self.ClickTracking)
+#     def random_callback(self, probability=0.6):
+#         if(decision(probability)):
+#             self.client.get(url=self.Impression)
+#             if(decision(probability)):
+#                 self.client.get(url=self.Skip)
+#                 if(decision(probability)):
+#                     self.client.get(url=self.Progress)
+#                     if(decision(probability)):
+#                         self.client.get(url=self.FirstQuartile)
+#                         if(decision(probability)):
+#                             self.client.get(url=self.Midpoint)
+#                             if(decision(probability)):
+#                                 self.client.get(url=self.ThirdQuartile)
+#                                 if(decision(probability)):
+#                                     self.client.get(url=self.Complete)
+#                                     if(decision(probability)):
+#                                         self.client.get(url=self.ClickTracking)
  
 
 
 if __name__ == "__main__":
-    my_env = Environment(user_classes=[AdsServer])
-    AdsServer(my_env).run()
+    my_env = Environment(user_classes=[Single_GetOne])
+    Single_GetOne(my_env).run()

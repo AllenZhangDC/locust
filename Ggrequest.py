@@ -84,15 +84,18 @@ def random_Ad_Unit_Video(num):
 
 def random_Ad_Units():
     ads_units = list()
-    for i in range(random.randint(1, 4)):
-        ads_units.append(random_Ad_Unit(i))  
+    num = 1
+    range1 = random.randint(1, 4)
+    for i in range(range1):
+        ads_units.append(random_Ad_Unit(num + i))  
+    num = num + range1
     for i in range(random.randint(1, 2)):
-        ads_units.append(random_Ad_Unit_Video(i))
+        ads_units.append(random_Ad_Unit_Video(num + i))
     return ads_units
 
 def generate_random_ggrequest_body():
     tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), random_text('hw_'), random_text('pub_'), random_text('morei_'), random_Ad_Units())
-    result = json.dumps(tmp, cls=CustomEncoder)
+    result = json.loads(json.dumps(tmp, cls=CustomEncoder))
     return result
 
 
