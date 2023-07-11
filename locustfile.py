@@ -9,13 +9,13 @@ gevent.monkey.patch_all()
 
 jsonstr = '{"cid": "cid_BzanIxIY", "req_id": "req_OssjLsTY", "cnt_id": "cnt_CmpgXijc", "lang": "ja-JP", "nw_id": "hw_nRWEXUCl", "pub_id": "pub_RQBbzrAB", "more_info": false, "ad_units": [{"no": 1, "hrc": "hrc_FTdCiVYc", "code": "z_v_r_b_2", "dy_id": 5, "sizes": [{"w": 300, "h": 250}]}, {"no": 2, "hrc": "hrc_YBaLEncJ", "code": "z_a_c_2", "dy_id": 8, "sizes": [{"w": 900, "h": 112}]}, {"no": 3, "hrc": "hrc_bsJZrNVa", "code": "shorts", "dy_id": 5, "sizes": [{"w": 200, "h": 800}]}, {"no": 4, "hrc": "hrc_UthSHBPw", "code": "shorts", "dy_id": 6, "sizes": [{"w": 200, "h": 800}]}]}'
 
-class Single_GetOne(HttpUser):
+class Single_GetOneV2(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
     wait_time = between(5, 10)
     probability = 0.6
     @task
     def get_onev2(self):
-            with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True, name="Single_GetOne") as resp:
+            with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True, name="Single_GetOneV2") as resp:
                 code = resp.status_code
                 if code == 200:
                     json_data = json.loads(resp.text)
@@ -26,22 +26,22 @@ class Single_GetOne(HttpUser):
                         self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
             
 
-class Single_GetGG(HttpUser):
+class Single_Post_GetGGV2(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
     wait_time = between(5, 10)
     @task
     def get_ggv2(self):
         json_body = generate_random_ggrequest_body()
-        resp = self.client.post(url="http://loadtest.dev.ganjing.world/v1/cdkapi/getggv2", json = json_body, name="Single_GetGG")
+        resp = self.client.post(url="http://loadtest.dev.ganjing.world/v1/cdkapi/getggv2", json = json_body, name="Single_Post_GetGGV2")
         if resp.status_code == 200:
             json_var = resp.json()
 
-class GetOneAndCallback(HttpUser):
+class GetOneV2_Callback(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
     wait_time = between(5, 10)
     @task
     def get_onev2(self):
-        with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Single_GetOne",catch_response=True) as resp:
+        with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Single_GetOneV2",catch_response=True) as resp:
             code = resp.status_code
             if code == 200:
                 json_data = json.loads(resp.text)
@@ -69,5 +69,5 @@ class GetOneAndCallback(HttpUser):
 
 
 if __name__ == "__main__":
-    my_env = Environment(user_classes=[Single_GetOne])
-    Single_GetOne(my_env).run()
+    my_env = Environment(user_classes=[Single_GetOneV2])
+    Single_GetOneV2(my_env).run()
