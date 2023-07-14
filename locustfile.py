@@ -36,11 +36,12 @@ class Single_Post_GetGGV2(HttpUser):
         if resp.status_code == 200:
             json_var = resp.json()
 
-class GetOneV2_Callback(HttpUser):
+class GetOneV2_With_Callback(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
     wait_time = between(5, 10)
     @task
     def get_onev2(self):
+        probability = 0.6
         with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Single_GetOneV2",catch_response=True) as resp:
             code = resp.status_code
             if code == 200:
@@ -55,14 +56,23 @@ class GetOneV2_Callback(HttpUser):
                     self.ThirdQuartile = ET.fromstring(xml).findall(".//*[@event='thirdQuartile']")[1].text
                     self.Complete = ET.fromstring(xml).findall(".//*[@event='complete']")[1].text
                     self.ClickTracking = ET.fromstring(xml).findall(".//ClickTracking")[0].text
-                    self.client.get(url=self.Impression, name="Impression")
-                    self.client.get(url=self.Skip, name="Skip")
-                    self.client.get(url=self.Progress, name="Progress")
-                    self.client.get(url=self.FirstQuartile, name="FirstQuartile")
-                    self.client.get(url=self.Midpoint, name="Midpoint")
-                    self.client.get(url=self.ThirdQuartile, name="ThirdQuartile")
-                    self.client.get(url=self.Complete, name="ThirdQuartile")
-                    self.client.get(url=self.ClickTracking, name="ClickTracking")
+                    if(decision(probability)):
+                        self.client.get(url=self.Impression, name="Impression")
+                        if(decision(probability)):
+                            self.client.get(url=self.Skip, name="Skip")
+                            if(decision(probability)):
+                                self.client.get(url=self.Progress, name="Progress")
+                                if(decision(probability)):
+                                    self.client.get(url=self.FirstQuartile, name="FirstQuartile")
+                                    if(decision(probability)):
+                                        self.client.get(url=self.Midpoint, name="Midpoint")
+                                        if(decision(probability)):
+                                            self.client.get(url=self.ThirdQuartile, name="ThirdQuartile")
+                                            if(decision(probability)):
+                                                self.client.get(url=self.Complete, name="ThirdQuartile")
+                                                if(decision(probability)):
+                                                    self.client.get(url=self.Complete, name="Complete")
+                                                    self.client.get(url=self.ClickTracking, name="ClickTracking")
                 else:
                     resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
  
