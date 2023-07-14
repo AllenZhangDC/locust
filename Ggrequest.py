@@ -68,7 +68,7 @@ class CustomEncoder(json.JSONEncoder):
         return super().default(obj)
     
 def random_size():
-    return random.choice([Size(450, 180), Size(300, 250), Size(728, 90), Size(900, 112), Size(540, 450)])
+    return random.choice([Size(200, 200), Size(300, 600), Size(300, 250), Size(540, 450), Size(450, 180), Size(728, 90), Size(900, 112)])
 
 
 def random_sizes():
@@ -78,6 +78,7 @@ def random_sizes():
 
 def random_Ad_Unit(num):
     return Ad_Unit(num, random_text('hrc_'), random_zone(), random_sizes())
+
 
 def random_Ad_Unit_Video(num):
     return Ad_Unit_Video(num, random_text('hrc_'))
@@ -93,10 +94,26 @@ def random_Ad_Units():
         ads_units.append(random_Ad_Unit_Video(num + i))
     return ads_units
 
+def fixed_Ad_Units():
+    ads_units = list()
+    ads_units.append(Ad_Unit(1, "Basketball", "z_a_c_1", sizes=[Size(900, 112)]))
+    ads_units.append(Ad_Unit(2, "Football", "z_a_c_2", sizes=[Size(540, 450), Size(300,600)]))
+    ads_units.append(Ad_Unit(3, "Tennis", "z_v_r_r_1", sizes=[Size(450, 180)]))
+    ads_units.append(Ad_Unit(4, "Soccer", "z_v_r_b_2", sizes=[Size(300, 250)]))
+    ads_units.append(Ad_Unit(5, "Golf", "z_a_b_1", sizes=[Size(728, 90)]))
+
+    return ads_units
+
 def generate_random_ggrequest_body():
     tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), random_text('hw_'), random_text('pub_'), random_text('morei_'), random_Ad_Units())
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
     return result
+
+def generate_random_ggrequest_body2():
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), random_text('hw_'), random_text('pub_'), random_text('morei_'), fixed_Ad_Units())
+    result = json.loads(json.dumps(tmp, cls=CustomEncoder))
+    return result
+
 
 
 

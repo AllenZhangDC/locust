@@ -15,24 +15,25 @@ class Single_GetOneV2(HttpUser):
     probability = 0.6
     @task
     def get_onev2(self):
-            with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True, name="Single_GetOneV2") as resp:
+            with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True, name="Single_Getonev2_get") as resp:
                 code = resp.status_code
                 if code == 200:
                     json_data = json.loads(resp.text)
                     if json_data["data"]["is_404"] == True:
                         resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
                     else:
-                        xml = base64.b64decode(json_data["data"]["xml"])
-                        self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
+                        pass
+                        # xml = base64.b64decode(json_data["data"]["xml"])
+                        # self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
             
 
-class Single_Post_GetGGV2(HttpUser):
+class Single_GetGGV2_Post(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
-    wait_time = between(5, 10)
+    wait_time = between(1, 10)
     @task
     def get_ggv2(self):
         json_body = generate_random_ggrequest_body()
-        resp = self.client.post(url="http://loadtest.dev.ganjing.world/v1/cdkapi/getggv2", json = json_body, name="Single_Post_GetGGV2")
+        resp = self.client.post(url="http://loadtest.dev.ganjing.world/v1/cdkapi/getggv2", json = json_body, name="Single_Getggv2_post")
         if resp.status_code == 200:
             json_var = resp.json()
 
@@ -41,8 +42,8 @@ class GetOneV2_With_Callback(HttpUser):
     wait_time = between(5, 10)
     @task
     def get_onev2(self):
-        probability = 0.6
-        with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Single_GetOneV2",catch_response=True) as resp:
+        probability = 1.0
+        with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Single_Getonev2_get",catch_response=True) as resp:
             code = resp.status_code
             if code == 200:
                 json_data = json.loads(resp.text)
@@ -57,27 +58,102 @@ class GetOneV2_With_Callback(HttpUser):
                     self.Complete = ET.fromstring(xml).findall(".//*[@event='complete']")[1].text
                     self.ClickTracking = ET.fromstring(xml).findall(".//ClickTracking")[0].text
                     if(decision(probability)):
-                        self.client.get(url=self.Impression, name="Impression")
+                        self.client.get(url=self.Impression, name="Getonev2 callback: Impression")
                         if(decision(probability)):
-                            self.client.get(url=self.Skip, name="Skip")
+                            self.client.get(url=self.Skip, name="Getonev2 callback: Skip")
                             if(decision(probability)):
-                                self.client.get(url=self.Progress, name="Progress")
+                                self.client.get(url=self.Progress, name="Getonev2 callback: Progress")
                                 if(decision(probability)):
-                                    self.client.get(url=self.FirstQuartile, name="FirstQuartile")
+                                    self.client.get(url=self.FirstQuartile, name="Getonev2 callback: FirstQuartile")
                                     if(decision(probability)):
-                                        self.client.get(url=self.Midpoint, name="Midpoint")
+                                        self.client.get(url=self.Midpoint, name="Getonev2 callback: Midpoint")
                                         if(decision(probability)):
-                                            self.client.get(url=self.ThirdQuartile, name="ThirdQuartile")
+                                            self.client.get(url=self.ThirdQuartile, name="Getonev2 callback: ThirdQuartile")
                                             if(decision(probability)):
-                                                self.client.get(url=self.Complete, name="ThirdQuartile")
+                                                self.client.get(url=self.Complete, name="Getonev2 callback: ThirdQuartile")
                                                 if(decision(probability)):
-                                                    self.client.get(url=self.Complete, name="Complete")
-                                                    self.client.get(url=self.ClickTracking, name="ClickTracking")
+                                                    self.client.get(url=self.Complete, name="Getonev2 callback: Complete")
+                                                    self.client.get(url=self.ClickTracking, name="Getonev2 callback: ClickTracking")
                 else:
                     resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
  
+class GetGGV2_With_Callback(HttpUser):
+    host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
+    wait_time = between(1, 10)
+    @task
+    def get_ggv2(self):
+        json_body = generate_random_ggrequest_body2()
+        jsonstr = json.dumps(json_body)
+        resp = self.client.post(url="http://loadtest.dev.ganjing.world/v1/cdkapi/getggv2", json = json_body, name="Single_Getggv2_post")
+        if resp.status_code == 200:
+            json_result = resp.json()
+            implist = list()
+            viewlist = list()
+
+            imp01 = json_result["data"]["gjw-0-1"]["impURL"]
+            if(imp01 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-1"]["no_ad_reason"]
+            else:
+                implist.append(imp01)
+            
+            imp02 = json_result["data"]["gjw-0-2"]["impURL"]
+            if(imp02 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-2"]["no_ad_reason"]
+            else:
+                implist.append(imp02)
+
+            imp03 = json_result["data"]["gjw-0-3"]["impURL"]
+            if(imp03 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-3"]["no_ad_reason"]
+            else:
+                implist.append(imp03)
+
+            imp04 = json_result["data"]["gjw-0-4"]["impURL"]
+            if(imp04 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-4"]["no_ad_reason"]
+            else:
+                implist.append(imp04)
+
+            imp05 = json_result["data"]["gjw-0-5"]["impURL"]
+            if(imp05 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-5"]["no_ad_reason"]
+            else:
+                implist.append(imp05)
+
+            view1 = json_result["data"]["gjw-0-1"]["viewableImpURL"]
+            if(view1 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-1"]["no_ad_reason"]
+            else:
+                viewlist.append(view1)
+
+            view2 = json_result["data"]["gjw-0-3"]["viewableImpURL"]
+            if(view2 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-3"]["no_ad_reason"]
+            else:
+                viewlist.append(view2)
+            click1 = json_result["data"]["gjw-0-3"]["clickURL"]
+            if(click1 == ""):
+                resp.failure_message = json_result["data"]["gjw-0-3"]["no_ad_reason"]
+            else:
+                self.client.get(click1, name="Getggv2 callback: Click")
+            
+            self.make_call_backs(implist,   "Getggv2 callback: Impression")
+            self.make_call_backs(viewlist,  "Getggv2 callback: View")
+            
+    def make_call_backs(self, callbacklist, name):
+        for url in callbacklist:
+                resp = self.client.get(url, name=name)
+                if resp.status_code == 200:
+                    json_data = json.loads(resp.text)
+                    if json_data["status"] != 200:
+                        resp.failure(json_data)
+                    else:
+                        pass
+                else:
+                    pass
+
 
 
 if __name__ == "__main__":
-    my_env = Environment(user_classes=[Single_GetOneV2])
-    Single_GetOneV2(my_env).run()
+    my_env = Environment(user_classes=[GetGGV2_With_Callback])
+    GetGGV2_With_Callback(my_env).run()
