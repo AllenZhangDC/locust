@@ -121,7 +121,7 @@ current_line = 0
 def mockupip():    
     global current_line
 
-    with open("./geoip.csv", mode='r', encoding='utf-8-sig') as file:
+    with open("geoip.csv", mode='r', encoding='utf-8-sig') as file:
         reader = csv.reader(file)
         lines = list(reader)
 
