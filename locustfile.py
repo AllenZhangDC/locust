@@ -9,23 +9,25 @@ gevent.monkey.patch_all()
 
 jsonstr = '{"cid": "cid_BzanIxIY", "req_id": "req_OssjLsTY", "cnt_id": "cnt_CmpgXijc", "lang": "ja-JP", "nw_id": "hw_nRWEXUCl", "pub_id": "pub_RQBbzrAB", "more_info": false, "ad_units": [{"no": 1, "hrc": "hrc_FTdCiVYc", "code": "z_v_r_b_2", "dy_id": 5, "sizes": [{"w": 300, "h": 250}]}, {"no": 2, "hrc": "hrc_YBaLEncJ", "code": "z_a_c_2", "dy_id": 8, "sizes": [{"w": 900, "h": 112}]}, {"no": 3, "hrc": "hrc_bsJZrNVa", "code": "shorts", "dy_id": 5, "sizes": [{"w": 200, "h": 800}]}, {"no": 4, "hrc": "hrc_UthSHBPw", "code": "shorts", "dy_id": 6, "sizes": [{"w": 200, "h": 800}]}]}'
 
-class Single_GetOneV2(HttpUser):
+class Single_Getone(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
     wait_time = between(5, 10)
     probability = 0.6
     @task
     def get_onev2(self):
-            with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, catch_response=True, name="Single_Getonev2_get") as resp:
-                code = resp.status_code
-                if code == 200:
-                    json_data = json.loads(resp.text)
-                    if json_data["data"]["is_404"] == True:
-                        resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
-                    else:
-                        pass
-                        # xml = base64.b64decode(json_data["data"]["xml"])
-                        # self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
-            
+        with self.client.get(url="/getone", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang(), "mockup_ip":mockupip()}, catch_response=True, name="Single_Getone_get") as resp:
+            code = resp.status_code
+            if code == 200:
+                json_data = json.loads(resp.text)
+                if json_data["data"]["is_404"] == True:
+                    resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
+                else:
+                    pass
+                    # xml = base64.b64decode(json_data["data"]["xml"])
+                    # self.Impression = ET.fromstring(xml).findall(".//Impression")[1].text
+            else:
+                resp.failure("Return code: " + resp.status_code + resp.url)
+        
 
 class Single_GetGGV2_Post(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
@@ -37,13 +39,13 @@ class Single_GetGGV2_Post(HttpUser):
         if resp.status_code == 200:
             json_var = resp.json()
 
-class GetOneV2_With_Callback(HttpUser):
+class Getone_With_Callback(HttpUser):
     host = "https://loadtest.dev.ganjing.world/v1/cdkapi"
     wait_time = between(5, 10)
     @task
     def get_onev2(self):
         probability = 1.0
-        with self.client.get(url="/getonev2", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang()}, name="Single_Getonev2_get",catch_response=True) as resp:
+        with self.client.get(url="/getone", params={"cid":random_text(), "cnt_id":random_text(), "req_id":random_text(), "lang":random_lang(), "mockup_ip":mockupip()},  name="Single_Getone_get",catch_response=True) as resp:
             code = resp.status_code
             if code == 200:
                 json_data = json.loads(resp.text)
@@ -58,22 +60,22 @@ class GetOneV2_With_Callback(HttpUser):
                     self.Complete = ET.fromstring(xml).findall(".//*[@event='complete']")[1].text
                     self.ClickTracking = ET.fromstring(xml).findall(".//ClickTracking")[0].text
                     if(decision(probability)):
-                        self.client.get(url=self.Impression, name="Getonev2 callback: Impression")
+                        self.client.get(url=self.Impression, name="Getone callback: Impression")
                         if(decision(probability)):
-                            self.client.get(url=self.Skip, name="Getonev2 callback: Skip")
+                            self.client.get(url=self.Skip, name="Getone callback: Skip")
                             if(decision(probability)):
-                                self.client.get(url=self.Progress, name="Getonev2 callback: Progress")
+                                self.client.get(url=self.Progress, name="Getone callback: Progress")
                                 if(decision(probability)):
-                                    self.client.get(url=self.FirstQuartile, name="Getonev2 callback: FirstQuartile")
+                                    self.client.get(url=self.FirstQuartile, name="Getone callback: FirstQuartile")
                                     if(decision(probability)):
-                                        self.client.get(url=self.Midpoint, name="Getonev2 callback: Midpoint")
+                                        self.client.get(url=self.Midpoint, name="Getone callback: Midpoint")
                                         if(decision(probability)):
-                                            self.client.get(url=self.ThirdQuartile, name="Getonev2 callback: ThirdQuartile")
+                                            self.client.get(url=self.ThirdQuartile, name="Getone callback: ThirdQuartile")
                                             if(decision(probability)):
-                                                self.client.get(url=self.Complete, name="Getonev2 callback: ThirdQuartile")
+                                                self.client.get(url=self.Complete, name="Getone callback: ThirdQuartile")
                                                 if(decision(probability)):
-                                                    self.client.get(url=self.Complete, name="Getonev2 callback: Complete")
-                                                    self.client.get(url=self.ClickTracking, name="Getonev2 callback: ClickTracking")
+                                                    self.client.get(url=self.Complete, name="Getone callback: Complete")
+                                                    self.client.get(url=self.ClickTracking, name="Getone callback: ClickTracking")
                 else:
                     resp.failure("is_404: True. NoAdsReason: " + json_data["data"]["no_ad_reason"])
  
@@ -155,5 +157,5 @@ class GetGGV2_With_Callback(HttpUser):
 
 
 if __name__ == "__main__":
-    my_env = Environment(user_classes=[GetGGV2_With_Callback])
-    GetGGV2_With_Callback(my_env).run()
+    my_env = Environment(user_classes=[Getone_With_Callback])
+    Getone_With_Callback(my_env).run()

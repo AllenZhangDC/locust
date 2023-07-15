@@ -1,6 +1,7 @@
 import random
 import json
 from mylib import *
+import csv
 
 class Size:
     def __init__(self, w, h):
@@ -24,14 +25,15 @@ class Ad_Unit_Video:
         self.sizes = [Size(200, 800)]
 
 class Ggrequests:
-    def __init__(self, cid, req_id, cnt_id, lang, nw_id, pub_id, more_info, ad_units):
+    def __init__(self, cid, req_id, cnt_id, lang, mockup_ip, nw_id, pub_id, more_info, ad_units):
         self.cid = cid
         self.req_id = req_id
         self.cnt_id = cnt_id
         self.lang = lang
+        self.mockup_ip = mockup_ip
         self.nw_id = nw_id
         self.pub_id = pub_id
-        self.more_info = False
+        self.more_info = more_info
         self.ad_units = ad_units
 
 class CustomEncoder(json.JSONEncoder):
@@ -105,17 +107,31 @@ def fixed_Ad_Units():
     return ads_units
 
 def generate_random_ggrequest_body():
-    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), random_text('hw_'), random_text('pub_'), random_text('morei_'), random_Ad_Units())
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, random_Ad_Units())
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
     return result
 
 def generate_random_ggrequest_body2():
-    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), random_text('hw_'), random_text('pub_'), random_text('morei_'), fixed_Ad_Units())
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, fixed_Ad_Units())
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
     return result
 
+current_line = 0
 
+def mockupip():    
+    global current_line
 
+    with open("./geoip.csv", mode='r', encoding='utf-8-sig') as file:
+        reader = csv.reader(file)
+        lines = list(reader)
+
+        if current_line < len(lines):
+            next_line = lines[current_line][0]
+            current_line += 1
+            return str(next_line)
+        else:
+            return None
+        
 
 if __name__ == '__main__':
     # 创建对象示例
@@ -124,9 +140,12 @@ if __name__ == '__main__':
     # ad_unit1 = Ad_Unit(1, True, 'ad_code_1', [size1, size2])
     # ad_unit2 = Ad_Unit(2, False, 'ad_code_2', [size1])
     # gg_request = Ggrequests(random_text(), random_text(), random_text(), random_lang(), random_text(), random_text(), random_text(), [ad_unit1, ad_unit2])
-    ads = generate_random_ggrequest_body()
+    # ads = generate_random_ggrequest_body()
 
-    json = json.dumps(ads, cls=CustomEncoder)
-    print(json)
+    # json = json.dumps(ads, cls=CustomEncoder)
+    # print(json)
 
     # 将对象转换为 JSON 字符串
+    ip = mockupip()
+    ip2 = mockupip()
+    print(ip, ip2)
