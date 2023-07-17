@@ -1,7 +1,8 @@
 import random
+from random import randint
 import json
 from mylib import *
-import csv
+from linereader import copen
 
 class Size:
     def __init__(self, w, h):
@@ -116,21 +117,19 @@ def generate_random_ggrequest_body2():
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
     return result
 
-current_line = 0
-
 def mockupip():    
-    global current_line
+    file = copen("./geoip.txt")
+    line = file.getline(randint(0,200000)).replace('\n', '')
+    return line
+    # with open("geoip", mode='r', encoding='utf-8-sig') as file:
+    #     reader = file
 
-    with open("/mnt/locust/geoip.csv", mode='r', encoding='utf-8-sig') as file:
-        reader = csv.reader(file)
-        lines = list(reader)
-
-        if current_line < len(lines):
-            next_line = lines[current_line][0]
-            current_line += 1
-            return str(next_line)
-        else:
-            return None
+        # if current_line < len(lines):
+        #     next_line = lines[current_line][0]
+        #     current_line += 1
+        #     return str(next_line)
+        # else:
+        #     return None
         
 
 if __name__ == '__main__':
