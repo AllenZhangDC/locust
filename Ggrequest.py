@@ -9,12 +9,21 @@ class Size:
         self.w = w
         self.h = h
 
-class Ad_Unit:
-    def __init__(self, no, hrc, code, sizes):
+
+
+class Ad_Unit_Banner:
+    def __init__(self, no, hrc, code,sizes):
         self.no = no
         self.hrc = hrc
         self.code = code
-        self.dy_id = random_position()
+        self.sizes = sizes
+
+class Ad_Unit_Shorts:
+    def __init__(self, no, hrc, code,dy_id,sizes):
+        self.no = no
+        self.hrc = hrc
+        self.code = code
+        self.dy_id=dy_id
         self.sizes = sizes
 
 class Ad_Unit_Video:
@@ -41,14 +50,22 @@ class CustomEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Size):
             return {'w': obj.w, 'h': obj.h}
-        elif isinstance(obj, Ad_Unit):
+        elif isinstance(obj, Ad_Unit_Banner):
             return {
                 'no': obj.no,
                 'hrc': obj.hrc,
-                'code': obj.code,
-                'dy_id': obj.dy_id,
+                'code': obj.code,               
                 'sizes': [self.default(size) for size in obj.sizes]  # 序列化列表中的每个元素
             }
+        elif isinstance(obj, Ad_Unit_Shorts):
+            return {
+                'no': obj.no,
+                'hrc': obj.hrc,
+                'code': obj.code, 
+                'dy_id':obj.dy_id,              
+                'sizes': [self.default(size) for size in obj.sizes]  # 序列化列表中的每个元素
+            }
+   
         elif isinstance(obj, Ad_Unit_Video):
             return {
                 'no': obj.no,
@@ -57,12 +74,14 @@ class CustomEncoder(json.JSONEncoder):
                 'dy_id': obj.dy_id,
                 'sizes': [self.default(size) for size in obj.sizes]
             }
+   
         elif isinstance(obj, Ggrequests):
             return {
                 'cid': obj.cid,
                 'req_id': obj.req_id,
                 'cnt_id': obj.cnt_id,
                 'lang': obj.lang,
+                'mockup_ip':obj.mockup_ip, 
                 'nw_id': obj.nw_id,
                 'pub_id': obj.pub_id,
                 'more_info': obj.more_info,
@@ -70,6 +89,7 @@ class CustomEncoder(json.JSONEncoder):
             }
         return super().default(obj)
     
+""" 
 def random_size():
     return random.choice([Size(200, 200), Size(300, 600), Size(300, 250), Size(540, 450), Size(450, 180), Size(728, 90), Size(900, 112)])
 
@@ -96,7 +116,46 @@ def random_Ad_Units():
     for i in range(random.randint(1, 2)):
         ads_units.append(random_Ad_Unit_Video(num + i))
     return ads_units
+"""
+def random_zones_sizes():
+    zones_sizes_list=[
+        ["z_v_r_b_1",Size(540,450)],
+        ["z_v_r_b_2",Size(540,450)],
+        ["z_v_r_b_3",Size(540,450)],
+        ["z_v_r_b_4",Size(540,450)],
+        ["z_v_r_r_1",Size(450,180)],
+        ["z_v_r_r_2",Size(450,180)],
+        ["z_v_r_r_3",Size(450,180)],
+        ["z_v_r_r_4",Size(450,180)],
+        ["z_a_b_1",Size(300,250)],
+        ["z_a_c_1",Size(728,90)],
+        ["z_a_c_2",Size(900,112)],
+        ["z_a_r_1",Size(300,250)],
+        ["z_h_t",Size(900,112)],
+        ["z_v_co",Size(450,180)],
+        ["z_v_co_b",Size(540,450)],
+        ["z_v_co_b_l",Size(900,112)]
+        ]
+    return random.sample(zones_sizes_list,4)#随机选取4个不同的zone,及其对应的size
 
+def random_Ad_Units_Banner():
+    ads_units=list()
+    ads_units.append(Ad_Unit_Banner(1,"Basketball","z_a_r_2",sizes=[Size(300,250),Size(300,600)]))
+    for num in range(2,6):
+        zone_size_four=random_zones_sizes()#随机选取4个不同的zone,及其对应的size
+        zone_size=zone_size_four[num-2]#循环这4个zone—size组合,按顺序取其一个
+        #print(f"ads_unites:{zone_size}")
+        ads_units.append(Ad_Unit_Banner(num, random_text('hrc_'),zone_size[0],sizes=[zone_size[1]]))
+    #print(f"ads_unites:{ads_units}")
+    return ads_units
+
+def random_Ad_Units_Shorts():
+    ads_units=list()
+    for num in range(24):
+        ads_units.append(Ad_Unit_Shorts(num, random_text('hrc_'),"shorts",num,sizes=[Size(300, 600)]))
+    #print(f"ads_unites:{ads_units}")
+    return ads_units
+"""
 def fixed_Ad_Units():
     ads_units = list()
     ads_units.append(Ad_Unit(1, "Basketball", "z_a_c_1", sizes=[Size(900, 112)]))
@@ -106,15 +165,17 @@ def fixed_Ad_Units():
     ads_units.append(Ad_Unit(5, "Golf", "z_a_b_1", sizes=[Size(728, 90)]))
 
     return ads_units
-
-def generate_random_ggrequest_body():
-    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, random_Ad_Units())
+"""
+def generate_random_ggrequest_body_Banner():
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, random_Ad_Units_Banner())
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
+    #print(f"post json:{result}")
     return result
 
-def generate_random_ggrequest_body2():
-    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, fixed_Ad_Units())
+def generate_random_ggrequest_body_Shorts():
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, random_Ad_Units_Shorts())
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
+    #print(f"post json:{result}")
     return result
 
 def mockupip():    
@@ -131,6 +192,7 @@ def mockupip():
         # else:
         #     return None
         
+
 
 if __name__ == '__main__':
     # 创建对象示例
