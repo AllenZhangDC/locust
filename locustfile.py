@@ -122,6 +122,20 @@ class ShortsUser(FastHttpUser):
         if resp.status_code == 200:
             json_result = resp.json()
           
+
+
+
+class ShortsUser_Callback(FastHttpUser):
+    host = host_banner_east
+    wait_time = constant_throughput(1)
+    @task
+    def get_ggv2_shorts(self, name="03 GetGGV2 Shorts"):
+        probability = 0.6
+        json_body = generate_random_ggrequest_body_Shorts()
+        resp = self.client.post(url="/getggv2", json = json_body, name=name) 
+        if resp.status_code == 200:
+            json_result = resp.json()
+          
             for each in json_result["data"]:
                 if(json_result["data"][each]["is_404"] == False):
                     # short banner ads, 100% impression
