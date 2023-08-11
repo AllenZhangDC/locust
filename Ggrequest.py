@@ -149,6 +149,17 @@ def random_Ad_Units_Banner():
     #print(f"ads_unites:{ads_units}")
     return ads_units
 
+def fixed_Ad_Units_Banner():
+    ads_units=list()
+    #ads_units.append(Ad_Unit_Banner(1,"Basketball","z_a_r_2",sizes=[Size(300,250),Size(300,600)]))
+    for num in range(5):
+        zone_size_four=random_zones_sizes()#随机选取4个不同的zone,及其对应的size
+        zone_size=zone_size_four[num-2]#循环这4个zone—size组合,按顺序取其一个
+        #print(f"ads_unites:{zone_size}")
+        ads_units.append(Ad_Unit_Banner(num, random_text('hrc_'),zone_size[0],sizes=[zone_size[1]]))
+    #print(f"ads_unites:{ads_units}")
+    return ads_units
+
 def random_Ad_Units_Shorts():
     ads_units=list()
     for num in range(24):
@@ -167,7 +178,7 @@ def fixed_Ad_Units():
     return ads_units
 """
 def generate_random_ggrequest_body_Banner():
-    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, random_Ad_Units_Banner())
+    tmp = Ggrequests(random_text('cid_'), random_text('req_'), random_text('cnt_'), random_lang(), mockupip(), random_text('hw_'), random_text('pub_'), False, fixed_Ad_Units_Banner())
     result = json.loads(json.dumps(tmp, cls=CustomEncoder))
     #print(f"post json:{result}")
     return result
