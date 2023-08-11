@@ -17,7 +17,7 @@ Traceback (most recent call last):
     task(self.user)
   File "/Users/guoweizhang/Tools/locust/locustfile.py", line 29, in get_onev2
     ClickTracking = ET.fromstring(xml).findall(".//*[@event='ClickTracking']")[1].text
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^wor
 IndexError: list index out of range
 
 [2023-07-05 13:55:52,303] Guoweis-Mac-Studio.local/ERROR/locust.user.task: list index out of range
